@@ -1,10 +1,4 @@
-import numpy as np
-import scipy as sp
-import os
-import pandas as pd
-from scipy.signal import fftconvolve
-import sofar as sofa
-import soundfile as sf
+import numpy as np; import scipy as sp; import os; import pandas as pd; from scipy.signal import fftconvolve; import sofar as sofa; import soundfile as sf; from pathlib import Path
 
 # -----------------------------
 # ===== Importing of data =====
@@ -127,14 +121,6 @@ def DR_import_bin(Room):
 # ===== Meta data helper functions =====
 # --------------------------------------
 
-def get_next_index(filename):
-    if not os.path.exists(filename) or os.path.getsize(filename) == 0:
-        return 0
-    df = pd.read_csv(filename)
-    if df.empty or "id" not in df.columns:
-        return 0  # No data or no id column
-    return df["id"].max() + 1
-
 def create_data_frame(meta_data, t):
     df = pd.DataFrame({
         "id": meta_data['id'],
@@ -160,6 +146,7 @@ def create_data_frame(meta_data, t):
 
 def append_dataframe_to_csv(filename, df_new):
     # Check if file exists and is non-empty
+    Path(filename).parent.mkdir(parents=True, exist_ok=True)
     if os.path.exists(filename) and os.path.getsize(filename) > 0:
         df_existing = pd.read_csv(filename)
         df_updated = pd.concat([df_existing, df_new], ignore_index=True)

@@ -1,7 +1,7 @@
 import numpy as np; import time
 
 from src.filter_designer.filter_designer import FilterDesigner
-from src.filter_designer.data_helper import data_slice, get_next_index, create_data_frame, append_dataframe_to_csv, simulations, sofa_simulation, save_audio_file, save_irs, direct_reverberant_simulation
+from src.filter_designer.data_helper import data_slice, create_data_frame, append_dataframe_to_csv, simulations, sofa_simulation, save_audio_file, save_irs, direct_reverberant_simulation
 
 # ++ To-Do ++
 # - look at RoomInRoom definition, should be average of all responses in array (average in power domain)

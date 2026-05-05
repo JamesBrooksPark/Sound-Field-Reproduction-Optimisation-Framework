@@ -11,7 +11,7 @@ if __name__ == "__main__":
     conditions_filepath = '/dss/work/nues6312/SoFROF/data/conditions.json'
     metadata_filename = '/dss/work/nues6312/SoFROF/data/metadata.csv'
     data_folder = '/dss/work/nues6312/SoFROF/data/'
-    
+    Path(data_folder).parent.mkdir(parents=True, exist_ok=True)
     
     conds, N = define_conditions()
     

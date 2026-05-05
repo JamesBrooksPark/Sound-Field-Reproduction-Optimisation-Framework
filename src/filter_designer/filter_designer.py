@@ -70,7 +70,7 @@ class FilterDesigner():
             print("RoomInRoom")
             sys.stdout.flush() 
             return self.RoomInRoom()
-        elif self.optimisation_criteria == "uncomp":
+        elif self.optimisation_criteria == "Uncomp":
             print("Uncomp")
             sys.stdout.flush() 
             return self.Uncomp()
