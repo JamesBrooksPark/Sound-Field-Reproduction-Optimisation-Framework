@@ -5,12 +5,13 @@ from src.numerical_evaluation.numerical_measures import NumericalMeasures
 from src.plotting.plotting_functions import *
 
 def run_plotting():
-    print("Something")
+    print("Plotting")
     data_folder = '/dss/work/nues6312/SoFROF/data/'
     filter_folder = data_folder + 'filters/'
     figures_folder = data_folder + 'figures/'
     
     files = os.scandir(filter_folder)
+    N = 0
     for entry in files:
         if entry.name.endswith(".wav"):
             N += 1
@@ -23,18 +24,19 @@ def run_plotting():
         RIR_Freq_plots(data_folder, ii, frequency_filename)
 
         rir_filename = figures_folder + f"rirs/{ii}_rir.pdf"
-        RIR_Time_plots(figures_folder, ii, rir_filename)
+        RIR_Time_plots(data_folder, ii, rir_filename)
 
         brir_filename = figures_folder + f"/brirs/{ii}_brir.pdf"
-        BRIR_Time_plots(figures_folder, ii, brir_filename)
+        BRIR_Time_plots(data_folder, ii, brir_filename)
 
         filter_filename = figures_folder +  f"/filters/{ii}_filter.pdf"
-        Filter_Time_plots(figures_folder, ii, filter_filename)
+        Filter_Time_plots(data_folder, ii, filter_filename)
         
-        filter_filename = figures_folder + f"/sources/{ii}.pdf"
-        Source_Frequency_plots(figures_folder, ii, filter_filename)
+        # filter_filename = figures_folder + f"/sources/{ii}.pdf"
+        # Source_Frequency_plots(data_folder, ii, filter_filename)
         
 def run_NE(Fs):
+    print("NE")
     NM = NumericalMeasures(Fs)
     NM.meta_data_path = '/dss/work/nues6312/SoFROF/data/metadata.csv'
     NM.results_data_path = '/dss/work/nues6312/SoFROF/data/NEresults.csv'
@@ -45,5 +47,5 @@ def run_NE(Fs):
 
 if __name__ == "__main__":
     Fs = 44100
-    # run_plotting()
+    run_plotting()
     run_NE(Fs)

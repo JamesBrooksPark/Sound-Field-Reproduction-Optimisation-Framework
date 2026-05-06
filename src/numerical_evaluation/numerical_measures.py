@@ -37,15 +37,15 @@ class NumericalMeasures():
         
         NFFT = next_power_2(max(len(h),len(d)))
         
-        upper_bin = (self.RMSE_upper_Hz/self.Fs) * NFFT
+        upper_bin = int((self.RMSE_upper_Hz/self.Fs) * NFFT)
             
         if self.RMSE_smoothing:
             Sm = Smoothing(NFFT)
             h = Smoothing.complexSmoothing(Sm, h, "spectrum", 1, 1 / self.RMSE_smoothing_octave)
             d = Smoothing.complexSmoothing(Sm, d, "spectrum", 1, 1 / self.RMSE_smoothing_octave)
         
-        H = np.abs(np.fft.rfft(h, self.NFFT))[:upper_bin]
-        D = np.abs(np.fft.rfft(d, self.NFFT))[:upper_bin]
+        H = np.abs(np.fft.rfft(h, NFFT))[:upper_bin]
+        D = np.abs(np.fft.rfft(d, NFFT))[:upper_bin]
         
         RMSE = np.sqrt(np.mean((20*np.log10(H/D))**2))
         
@@ -76,10 +76,10 @@ class NumericalMeasures():
         
         NFFT = next_power_2(max(len(h_dir),len(d_dir)))
         
-        upper_bin = (self.RMSE_upper_Hz/self.Fs) * NFFT
+        upper_bin = int((self.RMSE_upper_Hz/self.Fs) * NFFT)
 
         if self.DRR_smoothing:
-            Sm = Smoothing(self.NFFT)
+            Sm = Smoothing(NFFT)
             h_dir = Smoothing.complexSmoothing(Sm, h_dir, "spectrum", 1, 1 / self.DRR_smoothing_octave)
             h_rev = Smoothing.complexSmoothing(Sm, h_rev, "spectrum", 1, 1 / self.DRR_smoothing_octave)
             d_dir = Smoothing.complexSmoothing(Sm, d_dir, "spectrum", 1, 1 / self.DRR_smoothing_octave)
@@ -150,7 +150,7 @@ class NumericalMeasures():
             os.remove(self.results_data_path)
             
         for n in range(N):
-            h_arr, h_bin, h_dr, h_dr_bin, d_arr, d_bin, d_dr, d_dr_bin = read_simulation_data(n)
+            h_arr, h_bin, h_dr, h_dr_bin, d_arr, d_bin, d_dr, d_dr_bin = read_simulation_data(self.data_path,n)
             
             results_dataframe = create_results_dataframe(meta_data, n)
             

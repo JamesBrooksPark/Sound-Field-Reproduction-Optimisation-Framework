@@ -64,6 +64,7 @@ class FilterDesigner():
         config = ConfigLoader()
         for key, value in vars(config).items(): # set self. parameters to the same as the configuration file
             setattr(self, key, value)    
+            
     def filter_designer(self):
         # Check for non filtering methods and return relevant data and 'filter'
         if self.optimisation_criteria == "RoomInRoom":

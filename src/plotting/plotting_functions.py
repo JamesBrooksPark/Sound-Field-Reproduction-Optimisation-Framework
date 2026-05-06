@@ -1,4 +1,4 @@
-import matplotlib.pyplot as plt; import numpy as np; import soundfile as sf; import os; import re
+import matplotlib.pyplot as plt; import numpy as np; import soundfile as sf; import os; import re;  from pathlib import Path
 
 from src.ComplexSmoothing import Smoothing
 
@@ -102,9 +102,10 @@ class Plotting():
         return axes
     
 def RIR_Freq_plots(data_folder, filter_id, filename):
-    target, Fs = sf.read(f"{data_folder}/rirs/rirs_{filter_id}_d_eval.wav")
-    h_opt, Fs = sf.read(f"{data_folder}/rirs/rirs_{filter_id}_h_opt_eval.wav")
-    h, Fs = sf.read(f"{data_folder}/rirs/rirs_{filter_id}_h_eval.wav")
+
+    target, Fs = sf.read(f"{data_folder}rirs/rirs_{filter_id}_d_eval.wav")
+    h_opt, Fs = sf.read(f"{data_folder}rirs/rirs_{filter_id}_h_opt_eval.wav")
+    h, Fs = sf.read(f"{data_folder}rirs/rirs_{filter_id}_h_eval.wav")
 
     if h.ndim > 1:
         M = np.shape(h)[1]
@@ -127,16 +128,16 @@ def RIR_Freq_plots(data_folder, filter_id, filename):
             
     plt.tight_layout()
 
-    if os.path.dirname(filename):
-        os.makedirs(os.path.dirname(filename), exist_ok=True)
+
+    Path(filename).parent.mkdir(parents=True, exist_ok=True)
 
     plt.savefig(filename)
     plt.close()
 
 def RIR_Time_plots(data_folder, filter_id, filename):
-    target, Fs = sf.read(f"{data_folder}/rirs/rirs_{filter_id}_d_eval.wav")
-    h_opt, Fs = sf.read(f"{data_folder}/rirs/rirs_{filter_id}_h_opt_eval.wav")
-    h, Fs = sf.read(f"{data_folder}/rirs/rirs_{filter_id}_h_eval.wav")
+    target, Fs = sf.read(f"{data_folder}rirs/rirs_{filter_id}_d_eval.wav")
+    h_opt, Fs = sf.read(f"{data_folder}rirs/rirs_{filter_id}_h_opt_eval.wav")
+    h, Fs = sf.read(f"{data_folder}rirs/rirs_{filter_id}_h_eval.wav")
 
     if h.ndim > 1:
         M = np.shape(h)[1]
@@ -160,16 +161,15 @@ def RIR_Time_plots(data_folder, filter_id, filename):
             
     plt.tight_layout()
 
-    if os.path.dirname(filename):
-        os.makedirs(os.path.dirname(filename), exist_ok=True)
+    Path(filename).parent.mkdir(parents=True, exist_ok=True)
 
     plt.savefig(filename)
     plt.close()
 
 def BRIR_Time_plots(data_folder, filter_id, filename):
-    target, Fs = sf.read(f"{data_folder}/rirs/rirs_{filter_id}_d_eval.wav")
-    h_opt, Fs = sf.read(f"{data_folder}/rirs/rirs_{filter_id}_h_opt_eval.wav")
-    h, Fs = sf.read(f"{data_folder}/rirs/rirs_{filter_id}_h_eval.wav")
+    target, Fs = sf.read(f"{data_folder}brirs/brirs_{filter_id}_d_b.wav")
+    h_opt, Fs = sf.read(f"{data_folder}brirs/brirs_{filter_id}_h_opt_b.wav")
+    h, Fs = sf.read(f"{data_folder}brirs/brirs_{filter_id}_h_b.wav")
 
     M = 2
 
@@ -190,14 +190,13 @@ def BRIR_Time_plots(data_folder, filter_id, filename):
             
     plt.tight_layout()
 
-    if os.path.dirname(filename):
-        os.makedirs(os.path.dirname(filename), exist_ok=True)
+    Path(filename).parent.mkdir(parents=True, exist_ok=True)
     
     plt.savefig(filename)
     plt.close()
 
 def Filter_Time_plots(data_folder, filter_id, filename):
-    filter, Fs = sf.read(f"{data_folder}/filters/filter_{filter_id}.wav")
+    filter, Fs = sf.read(f"{data_folder}filters/filter_{filter_id}.wav")
         
     L = np.shape(filter)[1] if filter.ndim > 1 else 1
 
@@ -215,8 +214,7 @@ def Filter_Time_plots(data_folder, filter_id, filename):
             
     plt.tight_layout()
 
-    if os.path.dirname(filename):
-        os.makedirs(os.path.dirname(filename), exist_ok=True)
+    Path(filename).parent.mkdir(parents=True, exist_ok=True)
     
     plt.savefig(filename)
     plt.close()
@@ -247,8 +245,7 @@ def Source_Frequency_plots(data_folder, filter_id, filename):
         filename_mod = f"{filename[:-4]}_source_{l}.pdf"
         plt.tight_layout()
 
-        if os.path.dirname(filename_mod):
-            os.makedirs(os.path.dirname(filename_mod), exist_ok=True)
+        Path(filename).parent.mkdir(parents=True, exist_ok=True)
         
         plt.savefig(filename_mod)
         plt.close()
