@@ -150,18 +150,38 @@ def DelayCalculation(Fs, delay_time, h_p, h_s):
             delay = int(delay_samples + (h_p_peak - h2_p_peak))
             return delay
         
-def FIRShaper(L, Fl, delay, type, normalisation = False):
+def FIRShaper(L, Fl, delay, type, normalisation = True):
     if L == Fl:
         Fl = Fl-delay    
     z = np.zeros([3]) # Amplitudes
     z[0] = 10**16  # No energy
     z[1] = 1  # Max filter energy
     z[2] = 10**9  # taper energy
+
+    d = np.zeros([4]) # section sizes
+    d[0] = int(delay)# Delay
+    d[1] = int(100)  # Attack
+    d[2] = int(Fl-d[1])  # Filter length (-1 for max filter sample)
+    if L != Fl:
+        d[3] = int(L - np.sum(d[:3]))
+    else:
+        d[3] = 0
     
-    type = 'exponential'
-    if type == 'exponential':
+    shaper_vec_check(L,Fl,d)
+    
+    y = np.ones([L])
+    
+    y[: int(np.sum(d[:1]))] *= z[0]
+    y[int(np.sum(d[:1])) : int(np.sum(d[:2]))] = exponential_space(z[2], z[1], d[1])
+    y[int(np.sum(d[:2]))] *= z[1]
+    y[int(np.sum(d[:2]))+1 : int(np.sum(d[:3]))] = exponential_space(z[1], z[2], d[2]-1)
+    if d[3]> 0:
+        y[int(np.sum(d[:3])): ] = z[0]
+            
+    if normalisation:
+        # Calculate energy in weighting with no delay
         d = np.zeros([4]) # section sizes
-        d[0] = int(delay)# Delay
+        d[0] = 0
         d[1] = int(100)  # Attack
         d[2] = int(Fl-d[1])  # Filter length (-1 for max filter sample)
         if L != Fl:
@@ -171,62 +191,19 @@ def FIRShaper(L, Fl, delay, type, normalisation = False):
         
         shaper_vec_check(L,Fl,d)
         
-        y = np.ones([L])
-        
-        y[: int(np.sum(d[:1]))] *= z[0]
-        y[int(np.sum(d[:1])) : int(np.sum(d[:2]))] = exponential_space(z[2], z[1], d[1])
-        y[int(np.sum(d[:2]))] *= z[1]
-        y[int(np.sum(d[:2]))+1 : int(np.sum(d[:3]))] = exponential_space(z[1], z[2], d[2]-1)
+        y_n = np.ones([L])
+    
+        y_n[: int(np.sum(d[:1]))] *= z[0]
+        y_n[int(np.sum(d[:1])) : int(np.sum(d[:2]))] = exponential_space(z[2], z[1], d[1])
+        y_n[int(np.sum(d[:2]))] *= z[1]
+        y_n[int(np.sum(d[:2]))+1 : int(np.sum(d[:3]))] = exponential_space(z[1], z[2], d[2]-1)
         if d[3]> 0:
-            y[int(np.sum(d[:3])): ] = z[0]
+            y_n[int(np.sum(d[:3])): ] = z[0]
             
-    elif type == 'constant':
-        d = np.zeros([5])
-        d[0] = int(delay)
-        d[1] = int(10) # Attack
-        d[3] = int(200) # Decay
-        d[2] = int(Fl-d[1]-d[3])
-        if L != Fl:
-            d[4] = int(L - np.sum(d[:4]))
-        else:
-            d[4] = 0
+        no_delay_energy = np.sum(y_n**2)
         
-        shaper_vec_check(L,Fl,d)
-        
-        y = np.ones([L])
-        y[: int(np.sum(d[:1]))] *= z[0]
-        y[int(np.sum(d[:1])) : int(np.sum(d[:2]))] = exponential_space(z[0], z[1], d[1])
-        y[int(np.sum(d[:2])) : int(np.sum(d[:3]))] *= z[1]
-        y[int(np.sum(d[:3])) : int(np.sum(d[:4]))] = exponential_space(z[1], z[0], d[3])
-        if d[4]> 0:
-            y[int(np.sum(d[:4])): ] = z[0]
-            
-    # if normalisation:
-    #     # Calculate energy in weighting with no delay
-    #     d = np.zeros([5])
-    #     d[0] = int(0)
-    #     d[1] = int(10) # Attack
-    #     d[3] = int(200) # Decay
-    #     d[2] = int(Fl-d[1]-d[3])
-    #     if L != Fl:
-    #         d[4] = int(L - np.sum(d[:4]))
-    #     else:
-    #         d[4] = 0
-        
-    #     shaper_vec_check(L,Fl,d)
-        
-    #     y_n = np.ones([L])
-    #     y_n[: int(np.sum(d[:1]))] *= z[0]
-    #     y_n[int(np.sum(d[:1])) : int(np.sum(d[:2]))] = exponential_space(z[0], z[1], d[1])
-    #     y_n[int(np.sum(d[:2])) : int(np.sum(d[:3]))] *= z[1]
-    #     y_n[int(np.sum(d[:3])) : int(np.sum(d[:4]))] = exponential_space(z[1], z[0], d[3])
-    #     if d[4]> 0:
-    #         y_n[int(np.sum(d[:4])): ] = z[0]
-            
-    #     no_delay_energy = np.sum(y_n**2)
-        
-    #     # Normalise filter based on weighting with no delay
-    #     y *= no_delay_energy/np.sum(y**2)
+        # Normalise filter based on weighting with no delay
+        y *= no_delay_energy/np.sum(y**2)
         
     return y
 

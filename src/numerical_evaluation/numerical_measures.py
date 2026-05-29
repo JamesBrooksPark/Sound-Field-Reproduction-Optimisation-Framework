@@ -159,7 +159,7 @@ class NumericalMeasures():
             for m in range(M):
                 results_dataframe_m = results_dataframe
                 results_dataframe_m.loc[0, "Receiver_type"] = "Array"
-                results_dataframe_m.loc[0, "Receiver"] = m
+                results_dataframe_m.loc[0, "Receiver_index"] = m
                 results_dataframe_m.loc[0, "Spectral_RMSE"] = self.Spectral_RMSE(h_arr[:,m], d_arr[:,m])
                 results_dataframe_m.loc[0, "IACC_RMSE"] = float('NaN')
                 results_dataframe_m.loc[0, "DRR_RMSE"] = self.DRR_RMSE(h_dr[0,:,m],h_dr[1,:,m], d_dr[0,:,m],d_dr[1,:,m])
@@ -172,7 +172,7 @@ class NumericalMeasures():
             for m in range(2):
                 results_dataframe_m = results_dataframe
                 results_dataframe_m.loc[0, "Receiver_type"] = "Binaural"
-                results_dataframe_m.loc[0, "Receiver"] = m
+                results_dataframe_m.loc[0, "Receiver_index"] = m
                 results_dataframe_m.loc[0, "Spectral_RMSE"] = self.Spectral_RMSE(h_bin[:,m], d_bin[:,m])
                 if m == 0:
                     results_dataframe_m.loc[0, "IACC_RMSE"] = self.IACC_RMSE(h_bin, d_bin)

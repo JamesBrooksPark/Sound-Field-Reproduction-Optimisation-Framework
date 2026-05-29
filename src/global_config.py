@@ -14,8 +14,7 @@ tolerance_admm = 0.005
 maximum_iteration = 40
 solve_method = 'lu' # 'inverse', 'lu', 'solve'
 
-# regularisation_weight = 10**-2 # No norm
-regularisation_weight = 10**-2 # W/ norm
+regularisation_weight = 10**-3
 
 FIR_shaping_weight = 10**-9
 

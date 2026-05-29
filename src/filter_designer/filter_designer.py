@@ -27,7 +27,6 @@ class FilterDesigner():
         
         # Regularisation parameters
         self.regularisation_weight = None
-        self.norm_regularisaion_bool = True
         self.FIR_shaping_weight = None
         
         self.FIR_shaping_norm = True
@@ -222,17 +221,9 @@ class FilterDesigner():
         self.J = J
     
     def build_matrix(self):
-        # Number of source dependent regularisation
-        if self.norm_regularisaion_bool:
-            p = 3
-            Lp_norm = np.power(np.sum(np.abs(self.H_)**p), 1/p)
-            regularisation_weight = self.regularisation_weight * Lp_norm
-        else:
-            regularisation_weight = self.regularisation_weight
-        
         A = self.main_term.copy()
-        if regularisation_weight > 0:
-            A += ((2*regularisation_weight)/self.rho) * self.Ident
+        if self.regularisation_weight > 0:
+            A += ((2*self.regularisation_weight)/self.rho) * self.Ident
         if self.FIR_shaping_weight > 0:
                 A += ((2*self.FIR_shaping_weight)/self.rho) * self.X
 

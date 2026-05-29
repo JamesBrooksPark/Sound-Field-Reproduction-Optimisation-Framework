@@ -3,16 +3,16 @@ def define_conditions():
     calculation_M = 9
     evaluation_M = 25
     
-    playback_index = 5
+    playback_index = 1
     
     # Define variable parameters
-    target_rooms = [6]
+    target_rooms = [2]
     num_sources_vec = [1,3]
     optimisation_criteria = ["pressure","amplitude","mixed"]
     delay_supporting_bools = [True, False]
     ommit_primary_bools = [True, False]
     
-    playback_sofa_dir = '/dss/work/nues6312/DATA/RoomAugmentation_10/Binaural/Sofa/Room5'
+    playback_sofa_dir = f'/dss/work/nues6312/DATA/RoomAugmentation_10/Binaural/Sofa/Room{playback_index}'
     
     conditions = []
     idx = 0

@@ -188,21 +188,32 @@ def sofa_simulation(dir, save_dir, w, filename):
     else:
         L = 1
                 
-    n = 0
-    files = os.scandir(dir)
-    for entry in files:
-        if entry.name.endswith(".sofa"):
-            if n < L:
-                sofa_read = sofa.read_sofa(entry.path)
-                if n == 0:
-                        if L > 1:
-                            data = filter_sofa_data(sofa_read.Data_IR ,w[:,n])
-                        else:
-                            data = filter_sofa_data(sofa_read.Data_IR ,w)
-                else:
-                    data += filter_sofa_data(sofa_read.Data_IR ,w[:,n])
-                n += 1
-        
+    # n = 0
+    # files = os.scandir(dir)
+    # for entry in files:
+    #     if entry.name.endswith(".sofa"):
+    #         if n < L:
+    #             sofa_read = sofa.read_sofa(entry.path)
+    #             if n == 0:
+    #                     if L > 1:
+    #                         data = filter_sofa_data(sofa_read.Data_IR ,w[:,n])
+    #                     else:
+    #                         data = filter_sofa_data(sofa_read.Data_IR ,w)
+    #             else:
+    #                 data += filter_sofa_data(sofa_read.Data_IR ,w[:,n])
+    #             n += 1
+    for l in range(L):
+        sofa_path = dir + f'/RazrSim__L{l+1}__3_Binaural.sofa'
+        sofa_read = sofa.read_sofa(sofa_path)
+        if l == 0:
+            if L > 1:
+                data = filter_sofa_data(sofa_read.Data_IR ,w[:,l])
+            else:
+                data = filter_sofa_data(sofa_read.Data_IR ,w)
+        else:
+            data += filter_sofa_data(sofa_read.Data_IR ,w[:,l])
+            
+            
     sofa_save = sofa_read
     sofa_save.Data_IR = data
     save_path = save_dir + filename + '.sofa'
