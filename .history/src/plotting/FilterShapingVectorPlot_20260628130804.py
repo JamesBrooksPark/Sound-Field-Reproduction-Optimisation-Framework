@@ -1,0 +1,7 @@
+import numpy as np; import matplotlib.pyplot as plt
+
+from src.filter_designer.filter_helper import FIRShaper
+
+delay =
+
+x_0 = FIRShaper(L,I,0)

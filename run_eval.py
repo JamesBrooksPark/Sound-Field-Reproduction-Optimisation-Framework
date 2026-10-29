@@ -38,14 +38,18 @@ def run_plotting():
 def run_NE(Fs):
     print("NE")
     NM = NumericalMeasures(Fs)
-    NM.meta_data_path = '/dss/work/nues6312/SoFROF/data/metadata.csv'
-    NM.results_data_path = '/dss/work/nues6312/SoFROF/data/NEresults.csv'
-    NM.data_path = '/dss/work/nues6312/SoFROF/data'
+    # NM.meta_data_path = '/dss/work/nues6312/SoFROF/data/metadata.csv'
+    # NM.results_data_path = '/dss/work/nues6312/SoFROF/data/NEresults.csv'
+    # NM.data_path = '/dss/work/nues6312/SoFROF/data'
+    
+    NM.meta_data_path = '/Users/jamesbrookspark/Documents/04_Repositories/RoomAugmentation-Analysis/01_Data/01_OptimisationData/metadata.csv'
+    NM.results_data_path = '/Users/jamesbrookspark/Documents/04_Repositories/RoomAugmentation-Analysis/01_Data/01_OptimisationData/NEresults.csv'
+    NM.data_path = '/Users/jamesbrookspark/Documents/04_Repositories/RoomAugmentation-Analysis/01_Data/01_OptimisationData'
     
     NM.run_measures()
 
 
 if __name__ == "__main__":
     Fs = 44100
-    run_plotting()
+    # run_plotting()
     run_NE(Fs)

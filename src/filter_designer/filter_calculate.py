@@ -65,5 +65,9 @@ def run_condition(metadata_filename, data_folder, condition):
     save_irs(Filter_class.playback_array_evaluation, h_arr_opt_rand, Filter_class.target_array_evaluation, data_folder, id, Fs, 'array_eval')
     save_irs(Filter_class.playback_binaural,h_bin_opt , Filter_class.target_binaural, data_folder, id, Fs, 'binaural')   
     
+    if Filter_class.ommit_primary and Filter_class.delay_supporting:
+        perceived_rev = True
+    else:
+        perceived_rev = False
     
-    direct_reverberant_simulation(Filter_class.playback_array_evaluation_direct, Filter_class.playback_array_evaluation_reverberant, Filter_class.playback_binaural_direct, Filter_class.playback_binaural_reverberant, w, Filter_class.target_array_evaluation_direct, Filter_class.target_array_evaluation_reverberant, Filter_class.target_binaural_direct, Filter_class.target_binaural_reverberant, data_folder, id, Fs, Filter_class.ommit_primary)
+    direct_reverberant_simulation(Filter_class.playback_array_evaluation_direct, Filter_class.playback_array_evaluation_reverberant, Filter_class.playback_binaural_direct, Filter_class.playback_binaural_reverberant, w, Filter_class.target_array_evaluation_direct, Filter_class.target_array_evaluation_reverberant, Filter_class.target_binaural_direct, Filter_class.target_binaural_reverberant, data_folder, id, Fs,perceived_rev)
